@@ -7,14 +7,13 @@ execute:
   eval: true
 ---
 
-# Garbage Can Regression Challenge
 
 **Choose R or Python and delete the other code chunk.**
 
 ## R Code
 
 ```{r}
-#| echo: true
+#| echo: false
 library(tidyverse)
 library(broom)
 
@@ -49,6 +48,7 @@ observDF
 We regress `Anxiety` on `StressSurvey` and report the estimated coefficients, then compare them to the true relationship `Anxiety = Stress + 0.1 × Time`.
 
 ```{r}
+#| echo: false
 # Fit bivariate model
 fit_stresssurvey <- lm(Anxiety ~ StressSurvey, data = observDF)
 
@@ -81,6 +81,7 @@ In this dataset, the estimated intercept and slope (from the chunk above) quanti
 Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety.
 
 ```{r}
+#| echo: false
 # Create scatter plot with regression line
 ggplot(observDF, aes(x = StressSurvey, y = Anxiety)) +
   geom_point(size = 3, alpha = 0.7, color = "steelblue") +
@@ -114,6 +115,7 @@ cat("Fit assessment: The regression line shows a strong positive relationship.\n
 Run a bivariate regression of Anxiety on Time and compare the estimated coefficients to the true relationship.
 
 ```{r}
+#| echo: false
 # Fit bivariate model with Time
 fit_time <- lm(Anxiety ~ Time, data = observDF)
 
@@ -145,6 +147,7 @@ cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
 Create a scatter plot with the regression line showing the relationship between Time and Anxiety.
 
 ```{r}
+#| echo: false
 # Create scatter plot with regression line for Time
 ggplot(observDF, aes(x = Time, y = Anxiety)) +
   geom_point(size = 3, alpha = 0.7, color = "darkgreen") +
@@ -179,6 +182,7 @@ cat("Fit assessment: The regression line shows a positive relationship between T
 Run a multiple regression of Anxiety on both StressSurvey and Time and compare the estimated coefficients to the true relationship.
 
 ```{r}
+#| echo: false
 # Fit multiple regression model
 fit_multiple <- lm(Anxiety ~ StressSurvey + Time, data = observDF)
 
@@ -215,6 +219,7 @@ cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
 Run a multiple regression of Anxiety on both Stress and Time (the true variables) and compare the estimated coefficients to the true relationship.
 
 ```{r}
+#| echo: false
 # Fit multiple regression model with true variables
 fit_true <- lm(Anxiety ~ Stress + Time, data = observDF)
 
@@ -251,6 +256,7 @@ cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
 Compare the R-squared values and coefficient interpretations between the two multiple regression models and assess statistical significance.
 
 ```{r}
+#| echo: false
 # Extract R-squared values for comparison
 r_squared_stresssurvey_time <- summary(fit_multiple)$r.squared
 r_squared_stress_time <- summary(fit_true)$r.squared

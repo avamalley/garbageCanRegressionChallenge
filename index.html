@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -105,7 +70,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="r-code" class="level2">
 <h2 class="anchored" data-anchor-id="r-code">R Code</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -118,29 +82,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Data with known true relationships: Anxiety = Stress + 0.1 × Time</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>observDF <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Stress, <span class="sc">~</span>StressSurvey, <span class="sc">~</span>Time, <span class="sc">~</span>Anxiety,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">2</span>,<span class="fl">8.2</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">2</span>,<span class="fl">8.2</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="fl">2.1</span>,<span class="fl">8.21</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span>,</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>observDF</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15 × 4
    Stress StressSurvey  Time Anxiety
@@ -169,37 +110,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="bivariate-regression-analysis-with-stresssurvey">1) Bivariate Regression Analysis with StressSurvey</h3>
 <p>We regress <code>Anxiety</code> on <code>StressSurvey</code> and report the estimated coefficients, then compare them to the true relationship <code>Anxiety = Stress + 0.1 × Time</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit bivariate model</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fit_stresssurvey <span class="ot">&lt;-</span> <span class="fu">lm</span>(Anxiety <span class="sc">~</span> StressSurvey, <span class="at">data =</span> observDF)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients (tidy and named)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fit_tidy <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(fit_stresssurvey)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>coefficients_named <span class="ot">&lt;-</span> <span class="fu">setNames</span>(fit_tidy<span class="sc">$</span>estimate, fit_tidy<span class="sc">$</span>term)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>coefficients_named</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept) StressSurvey 
       -1.524        1.047 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a concise summary statement</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>intercept_est <span class="ot">&lt;-</span> coefficients_named[<span class="st">"(Intercept)"</span>]</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>slope_est <span class="ot">&lt;-</span> coefficients_named[<span class="st">"StressSurvey"</span>]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Estimated model: Anxiety = %.3f + %.3f × StressSurvey</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  intercept_est, slope_est</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Estimated model: Anxiety = -1.524 + 1.047 × StressSurvey</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare to true relationship comment</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"True DGP uses Stress (slope = 1.0) and Time (0.1×) —</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"using StressSurvey (a proxy) in a bivariate regression yields a slope"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"close to but not exactly 1, and the intercept absorbs misspecification.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>True DGP uses Stress (slope = 1.0) and Time (0.1×) —
- using StressSurvey (a proxy) in a bivariate regression yields a slope close to but not exactly 1, and the intercept absorbs misspecification.</code></pre>
+<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
+ Using StressSurvey (a proxy) in a bivariate regression yields a slope close to but not exactly 1, and the intercept absorbs misspecification.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard model summary</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_stresssurvey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -221,27 +142,12 @@ Multiple R-squared:  0.9011,    Adjusted R-squared:  0.8935
 F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
 </div>
 </div>
-<p>In this dataset, the estimated intercept and slope (from the chunk above) quantify how <code>StressSurvey</code> predicts <code>Anxiety</code>. The true process depends on <code>Stress</code> (coefficient 1) and <code>Time</code> (coefficient 0.1). Because <code>StressSurvey</code> is an imperfect proxy for <code>Stress</code> and we omit <code>Time</code>, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.</p>
+<p>In this dataset, the estimated intercept and slope (from the chunk above) quantify how <code>StressSurvey</code> predicts <code>Anxiety</code>. The true process is <code>Anxiety = 0 + 1.0 × Stress + 0.1 × Time</code>. Because <code>StressSurvey</code> is an imperfect proxy for <code>Stress</code> and we omit <code>Time</code>, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.</p>
 </section>
 <section id="visualization-of-bivariate-relationship" class="level3">
 <h3 class="anchored" data-anchor-id="visualization-of-bivariate-relationship">2) Visualization of Bivariate Relationship</h3>
 <p>Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot with regression line</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(observDF, <span class="fu">aes</span>(<span class="at">x =</span> StressSurvey, <span class="at">y =</span> Anxiety)) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bivariate Relationship: Anxiety vs StressSurvey"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Scatter plot with linear regression line and 95% confidence interval"</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"StressSurvey"</span>,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Anxiety"</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">color =</span> <span class="st">"gray50"</span>)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -252,18 +158,9 @@ F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate R-squared for fit assessment</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>r_squared <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_stresssurvey)<span class="sc">$</span>r.squared</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"R-squared: %.3f</span><span class="sc">\n</span><span class="st">"</span>, r_squared))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R-squared: 0.901</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comment on the fit</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Fit assessment: The regression line shows a strong positive relationship.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"However, there are potential issues:</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1. Omitted variable bias (Time is excluded)</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2. StressSurvey is an imperfect proxy for the true Stress variable</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3. The relationship may be nonlinear in the true data generating process</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fit assessment: The regression line shows a strong positive relationship.
  However, there are potential issues:
@@ -277,29 +174,13 @@ F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
 <h3 class="anchored" data-anchor-id="bivariate-regression-analysis-with-time">3) Bivariate Regression Analysis with Time</h3>
 <p>Run a bivariate regression of Anxiety on Time and compare the estimated coefficients to the true relationship.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit bivariate model with Time</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>fit_time <span class="ot">&lt;-</span> <span class="fu">lm</span>(Anxiety <span class="sc">~</span> Time, <span class="at">data =</span> observDF)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients (tidy and named)</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>fit_time_tidy <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(fit_time)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>coefficients_time <span class="ot">&lt;-</span> <span class="fu">setNames</span>(fit_time_tidy<span class="sc">$</span>estimate, fit_time_tidy<span class="sc">$</span>term)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>coefficients_time</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)        Time 
   -3.680136    5.340592 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a concise summary statement</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>intercept_time <span class="ot">&lt;-</span> coefficients_time[<span class="st">"(Intercept)"</span>]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>slope_time <span class="ot">&lt;-</span> coefficients_time[<span class="st">"Time"</span>]</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Estimated model: Anxiety = %.3f + %.3f × Time</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  intercept_time, slope_time</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Estimated model: Anxiety = -3.680 + 5.341 × Time</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard model summary</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_time)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -320,13 +201,8 @@ Residual standard error: 3.323 on 13 degrees of freedom
 Multiple R-squared:  0.563, Adjusted R-squared:  0.5294 
 F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare to true relationship</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"True DGP: Anxiety = Stress + 0.1 × Time</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The true coefficient on Time is 0.1.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"This bivariate regression omits Stress, so the estimated Time coefficient</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"absorbs the effect of the omitted Stress variable, making it much larger than 0.1.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>True DGP: Anxiety = Stress + 0.1 × Time
+<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
  The true coefficient on Time is 0.1.
  This bivariate regression omits Stress, so the estimated Time coefficient
  absorbs the effect of the omitted Stress variable, making it much larger than 0.1.</code></pre>
@@ -337,21 +213,6 @@ F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 <h3 class="anchored" data-anchor-id="visualization-of-bivariate-relationship-with-time">4) Visualization of Bivariate Relationship with Time</h3>
 <p>Create a scatter plot with the regression line showing the relationship between Time and Anxiety.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot with regression line for Time</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(observDF, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Anxiety)) <span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bivariate Relationship: Anxiety vs Time"</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Scatter plot with linear regression line and 95% confidence interval"</span>,</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time"</span>,</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Anxiety"</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">color =</span> <span class="st">"gray50"</span>)</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -362,19 +223,9 @@ F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate R-squared for fit assessment</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>r_squared_time <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_time)<span class="sc">$</span>r.squared</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"R-squared: %.3f</span><span class="sc">\n</span><span class="st">"</span>, r_squared_time))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R-squared: 0.563</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comment on the fit and issues</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Fit assessment: The regression line shows a positive relationship between Time and Anxiety.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"However, there are significant issues:</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1. Omitted variable bias (Stress is excluded from the model)</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2. The estimated Time coefficient is severely biased upward</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3. The relationship appears stronger than it truly is due to confounding</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4. The true effect of Time (0.1) is much smaller than what this model suggests</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fit assessment: The regression line shows a positive relationship between Time and Anxiety.
  However, there are significant issues:
@@ -389,30 +240,13 @@ F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 <h3 class="anchored" data-anchor-id="multiple-regression-analysis">5) Multiple Regression Analysis</h3>
 <p>Run a multiple regression of Anxiety on both StressSurvey and Time and compare the estimated coefficients to the true relationship.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple regression model</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fit_multiple <span class="ot">&lt;-</span> <span class="fu">lm</span>(Anxiety <span class="sc">~</span> StressSurvey <span class="sc">+</span> Time, <span class="at">data =</span> observDF)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients (tidy and named)</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>fit_multiple_tidy <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(fit_multiple)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>coefficients_multiple <span class="ot">&lt;-</span> <span class="fu">setNames</span>(fit_multiple_tidy<span class="sc">$</span>estimate, fit_multiple_tidy<span class="sc">$</span>term)</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>coefficients_multiple</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept) StressSurvey         Time 
    0.5887578    1.4269257   -2.7799445 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a concise summary statement</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>intercept_mult <span class="ot">&lt;-</span> coefficients_multiple[<span class="st">"(Intercept)"</span>]</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>slope_stresssurvey <span class="ot">&lt;-</span> coefficients_multiple[<span class="st">"StressSurvey"</span>]</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>slope_time <span class="ot">&lt;-</span> coefficients_multiple[<span class="st">"Time"</span>]</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Estimated model: Anxiety = %.3f + %.3f × StressSurvey + %.3f × Time</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  intercept_mult, slope_stresssurvey, slope_time</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Estimated model: Anxiety = 0.589 + 1.427 × StressSurvey + -2.780 × Time</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard model summary</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_multiple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -434,17 +268,8 @@ Residual standard error: 1.334 on 12 degrees of freedom
 Multiple R-squared:  0.935, Adjusted R-squared:  0.9242 
 F-statistic: 86.32 on 2 and 12 DF,  p-value: 7.538e-08</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare to true relationship</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"True DGP: Anxiety = Stress + 0.1 × Time</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Comparison to true relationship:</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3. The multiple regression controls for both variables, reducing omitted variable bias</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4. However, StressSurvey is still an imperfect proxy for the true Stress variable</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    slope_stresssurvey, slope_time)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>True DGP: Anxiety = Stress + 0.1 × Time
+<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
  Comparison to true relationship:
  1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f
  2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f
@@ -452,6 +277,151 @@ F-statistic: 86.32 on 2 and 12 DF,  p-value: 7.538e-08</code></pre>
  4. However, StressSurvey is still an imperfect proxy for the true Stress variable
  5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model
  1.426926 -2.779944</code></pre>
+</div>
+</div>
+</section>
+<section id="multiple-regression-analysis-with-true-variables" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-regression-analysis-with-true-variables">6) Multiple Regression Analysis with True Variables</h3>
+<p>Run a multiple regression of Anxiety on both Stress and Time (the true variables) and compare the estimated coefficients to the true relationship.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(x): essentially perfect fit: summary may be unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept)       Stress         Time 
+9.173067e-16 1.000000e+00 1.000000e-01 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated model: Anxiety = 0.000 + 1.000 × Stress + 0.100 × Time</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(fit_true): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Anxiety ~ Stress + Time, data = observDF)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.330e-15 -4.027e-16  2.604e-16  4.822e-16  8.124e-16 
+
+Coefficients:
+             Estimate Std. Error   t value Pr(&gt;|t|)    
+(Intercept) 9.173e-16  5.371e-16 1.708e+00    0.113    
+Stress      1.000e+00  6.067e-17 1.648e+16   &lt;2e-16 ***
+Time        1.000e-01  4.273e-16 2.340e+14   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.268e-16 on 12 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 3.109e+32 on 2 and 12 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
+ Perfect comparison to true relationship:
+ 1. True Stress coefficient = 1.0, estimated Stress coefficient = %.3f
+ 2. True Time coefficient = 0.1, estimated Time coefficient = %.3f
+ 3. True intercept = 0.0, estimated intercept = %.3f
+ 4. This model uses the true variables, so coefficients should match the DGP exactly
+ 5. Any small differences are due to numerical precision and the specific data points
+ 1 0.1 9.173067e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="model-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="model-comparison">7) Model Comparison</h3>
+<p>Compare the R-squared values and coefficient interpretations between the two multiple regression models and assess statistical significance.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(fit_true): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Model Comparison - R-squared Values:"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Model R_squared
+1 StressSurvey + Time 0.9350052
+2       Stress + Time 1.0000000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Statistical Significance Analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 (StressSurvey + Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept): p-value = 0.5795 (Not Significant)
+  StressSurvey: p-value = 0.0000 (Significant)
+  Time: p-value = 0.0278 (Significant)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model 2 (Stress + Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept): p-value = 0.1134 (Not Significant)
+  Stress: p-value = 0.0000 (Significant)
+  Time: p-value = 0.0000 (Significant)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Real-world Implications:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. R-squared Comparison:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - StressSurvey + Time model: R² = 0.935</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Stress + Time model: R² = 1.000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - The true variable model should have higher R²</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Coefficient Interpretation:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Both models control for confounding, reducing omitted variable bias</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - The Stress + Time model provides unbiased estimates of true relationships</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - The StressSurvey + Time model shows the effect of measurement error</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Statistical Significance:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Both models should show significance for their respective variables</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Significance doesn't guarantee causal interpretation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model specification matters more than statistical significance</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. Key Lessons:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Using the correct variables (Stress vs StressSurvey) is crucial</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Multiple regression helps control for confounding</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - High R² and significance don't guarantee correct causal inference</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Real-world data often involves measurement error and omitted variables</code></pre>
 </div>
 </div>
 </section>
