@@ -18,7 +18,7 @@ execute:
 library(tidyverse)
 library(broom)
 
-# Data with known true relationships: Anxiety = Stress + 0.1 × Time
+# Data with known true relationships: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
 observDF <- tribble(
   ~Stress, ~StressSurvey, ~Time, ~Anxiety,
   0,0,0,0,
@@ -66,15 +66,15 @@ cat(sprintf(
 ))
 
 # Compare to true relationship comment
-cat("True DGP uses Stress (slope = 1.0) and Time (0.1×) —\n",
-    "using StressSurvey (a proxy) in a bivariate regression yields a slope",
+cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
+    "Using StressSurvey (a proxy) in a bivariate regression yields a slope",
     "close to but not exactly 1, and the intercept absorbs misspecification.\n")
 
 # Standard model summary
 summary(fit_stresssurvey)
 ```
 
-In this dataset, the estimated intercept and slope (from the chunk above) quantify how `StressSurvey` predicts `Anxiety`. The true process depends on `Stress` (coefficient 1) and `Time` (coefficient 0.1). Because `StressSurvey` is an imperfect proxy for `Stress` and we omit `Time`, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.
+In this dataset, the estimated intercept and slope (from the chunk above) quantify how `StressSurvey` predicts `Anxiety`. The true process is `Anxiety = 0 + 1.0 × Stress + 0.1 × Time`. Because `StressSurvey` is an imperfect proxy for `Stress` and we omit `Time`, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.
 
 ### 2) Visualization of Bivariate Relationship
 
@@ -134,7 +134,7 @@ cat(sprintf(
 summary(fit_time)
 
 # Compare to true relationship
-cat("True DGP: Anxiety = Stress + 0.1 × Time\n",
+cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
     "The true coefficient on Time is 0.1.\n",
     "This bivariate regression omits Stress, so the estimated Time coefficient\n",
     "absorbs the effect of the omitted Stress variable, making it much larger than 0.1.\n")
@@ -200,7 +200,7 @@ cat(sprintf(
 summary(fit_multiple)
 
 # Compare to true relationship
-cat("True DGP: Anxiety = Stress + 0.1 × Time\n",
+cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
     "Comparison to true relationship:\n",
     "1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f\n",
     "2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f\n",
@@ -208,4 +208,104 @@ cat("True DGP: Anxiety = Stress + 0.1 × Time\n",
     "4. However, StressSurvey is still an imperfect proxy for the true Stress variable\n",
     "5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model\n",
     slope_stresssurvey, slope_time)
+```
+
+### 6) Multiple Regression Analysis with True Variables
+
+Run a multiple regression of Anxiety on both Stress and Time (the true variables) and compare the estimated coefficients to the true relationship.
+
+```{r}
+# Fit multiple regression model with true variables
+fit_true <- lm(Anxiety ~ Stress + Time, data = observDF)
+
+# Coefficients (tidy and named)
+fit_true_tidy <- broom::tidy(fit_true)
+coefficients_true <- setNames(fit_true_tidy$estimate, fit_true_tidy$term)
+coefficients_true
+
+# Print a concise summary statement
+intercept_true <- coefficients_true["(Intercept)"]
+slope_stress <- coefficients_true["Stress"]
+slope_time_true <- coefficients_true["Time"]
+cat(sprintf(
+  "Estimated model: Anxiety = %.3f + %.3f × Stress + %.3f × Time\n",
+  intercept_true, slope_stress, slope_time_true
+))
+
+# Standard model summary
+summary(fit_true)
+
+# Compare to true relationship
+cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
+    "Perfect comparison to true relationship:\n",
+    "1. True Stress coefficient = 1.0, estimated Stress coefficient = %.3f\n",
+    "2. True Time coefficient = 0.1, estimated Time coefficient = %.3f\n",
+    "3. True intercept = 0.0, estimated intercept = %.3f\n",
+    "4. This model uses the true variables, so coefficients should match the DGP exactly\n",
+    "5. Any small differences are due to numerical precision and the specific data points\n",
+    slope_stress, slope_time_true, intercept_true)
+```
+
+### 7) Model Comparison
+
+Compare the R-squared values and coefficient interpretations between the two multiple regression models and assess statistical significance.
+
+```{r}
+# Extract R-squared values for comparison
+r_squared_stresssurvey_time <- summary(fit_multiple)$r.squared
+r_squared_stress_time <- summary(fit_true)$r.squared
+
+# Create comparison table
+model_comparison <- data.frame(
+  Model = c("StressSurvey + Time", "Stress + Time"),
+  R_squared = c(r_squared_stresssurvey_time, r_squared_stress_time),
+  stringsAsFactors = FALSE
+)
+
+print("Model Comparison - R-squared Values:")
+print(model_comparison)
+
+# Extract p-values for statistical significance assessment
+p_values_stresssurvey <- fit_multiple_tidy$p.value
+p_values_stress <- fit_true_tidy$p.value
+
+cat("\nStatistical Significance Analysis:\n")
+cat("Model 1 (StressSurvey + Time):\n")
+for(i in 1:nrow(fit_multiple_tidy)) {
+  term <- fit_multiple_tidy$term[i]
+  p_val <- fit_multiple_tidy$p.value[i]
+  sig <- ifelse(p_val < 0.05, "Significant", "Not Significant")
+  cat(sprintf("  %s: p-value = %.4f (%s)\n", term, p_val, sig))
+}
+
+cat("\nModel 2 (Stress + Time):\n")
+for(i in 1:nrow(fit_true_tidy)) {
+  term <- fit_true_tidy$term[i]
+  p_val <- fit_true_tidy$p.value[i]
+  sig <- ifelse(p_val < 0.05, "Significant", "Not Significant")
+  cat(sprintf("  %s: p-value = %.4f (%s)\n", term, p_val, sig))
+}
+
+# Real-world implications discussion
+cat("\nReal-world Implications:\n")
+cat("1. R-squared Comparison:\n")
+cat(sprintf("   - StressSurvey + Time model: R² = %.3f\n", r_squared_stresssurvey_time))
+cat(sprintf("   - Stress + Time model: R² = %.3f\n", r_squared_stress_time))
+cat("   - The true variable model should have higher R²\n\n")
+
+cat("2. Coefficient Interpretation:\n")
+cat("   - Both models control for confounding, reducing omitted variable bias\n")
+cat("   - The Stress + Time model provides unbiased estimates of true relationships\n")
+cat("   - The StressSurvey + Time model shows the effect of measurement error\n\n")
+
+cat("3. Statistical Significance:\n")
+cat("   - Both models should show significance for their respective variables\n")
+cat("   - Significance doesn't guarantee causal interpretation\n")
+cat("   - Model specification matters more than statistical significance\n\n")
+
+cat("4. Key Lessons:\n")
+cat("   - Using the correct variables (Stress vs StressSurvey) is crucial\n")
+cat("   - Multiple regression helps control for confounding\n")
+cat("   - High R² and significance don't guarantee correct causal inference\n")
+cat("   - Real-world data often involves measurement error and omitted variables\n")
 ```
