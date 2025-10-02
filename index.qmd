@@ -44,4 +44,168 @@ observDF
 
 ## Your Analysis
 
-Follow the challenge instructions from your course to complete your analysis.
+### 1) Bivariate Regression Analysis with StressSurvey
+
+We regress `Anxiety` on `StressSurvey` and report the estimated coefficients, then compare them to the true relationship `Anxiety = Stress + 0.1 × Time`.
+
+```{r}
+# Fit bivariate model
+fit_stresssurvey <- lm(Anxiety ~ StressSurvey, data = observDF)
+
+# Coefficients (tidy and named)
+fit_tidy <- broom::tidy(fit_stresssurvey)
+coefficients_named <- setNames(fit_tidy$estimate, fit_tidy$term)
+coefficients_named
+
+# Print a concise summary statement
+intercept_est <- coefficients_named["(Intercept)"]
+slope_est <- coefficients_named["StressSurvey"]
+cat(sprintf(
+  "Estimated model: Anxiety = %.3f + %.3f × StressSurvey\n",
+  intercept_est, slope_est
+))
+
+# Compare to true relationship comment
+cat("True DGP uses Stress (slope = 1.0) and Time (0.1×) —\n",
+    "using StressSurvey (a proxy) in a bivariate regression yields a slope",
+    "close to but not exactly 1, and the intercept absorbs misspecification.\n")
+
+# Standard model summary
+summary(fit_stresssurvey)
+```
+
+In this dataset, the estimated intercept and slope (from the chunk above) quantify how `StressSurvey` predicts `Anxiety`. The true process depends on `Stress` (coefficient 1) and `Time` (coefficient 0.1). Because `StressSurvey` is an imperfect proxy for `Stress` and we omit `Time`, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.
+
+### 2) Visualization of Bivariate Relationship
+
+Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety.
+
+```{r}
+# Create scatter plot with regression line
+ggplot(observDF, aes(x = StressSurvey, y = Anxiety)) +
+  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "red", linewidth = 1) +
+  labs(
+    title = "Bivariate Relationship: Anxiety vs StressSurvey",
+    subtitle = "Scatter plot with linear regression line and 95% confidence interval",
+    x = "StressSurvey",
+    y = "Anxiety"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50")
+  )
+
+# Calculate R-squared for fit assessment
+r_squared <- summary(fit_stresssurvey)$r.squared
+cat(sprintf("R-squared: %.3f\n", r_squared))
+
+# Comment on the fit
+cat("Fit assessment: The regression line shows a strong positive relationship.\n",
+    "However, there are potential issues:\n",
+    "1. Omitted variable bias (Time is excluded)\n",
+    "2. StressSurvey is an imperfect proxy for the true Stress variable\n",
+    "3. The relationship may be nonlinear in the true data generating process\n")
+```
+
+### 3) Bivariate Regression Analysis with Time
+
+Run a bivariate regression of Anxiety on Time and compare the estimated coefficients to the true relationship.
+
+```{r}
+# Fit bivariate model with Time
+fit_time <- lm(Anxiety ~ Time, data = observDF)
+
+# Coefficients (tidy and named)
+fit_time_tidy <- broom::tidy(fit_time)
+coefficients_time <- setNames(fit_time_tidy$estimate, fit_time_tidy$term)
+coefficients_time
+
+# Print a concise summary statement
+intercept_time <- coefficients_time["(Intercept)"]
+slope_time <- coefficients_time["Time"]
+cat(sprintf(
+  "Estimated model: Anxiety = %.3f + %.3f × Time\n",
+  intercept_time, slope_time
+))
+
+# Standard model summary
+summary(fit_time)
+
+# Compare to true relationship
+cat("True DGP: Anxiety = Stress + 0.1 × Time\n",
+    "The true coefficient on Time is 0.1.\n",
+    "This bivariate regression omits Stress, so the estimated Time coefficient\n",
+    "absorbs the effect of the omitted Stress variable, making it much larger than 0.1.\n")
+```
+
+### 4) Visualization of Bivariate Relationship with Time
+
+Create a scatter plot with the regression line showing the relationship between Time and Anxiety.
+
+```{r}
+# Create scatter plot with regression line for Time
+ggplot(observDF, aes(x = Time, y = Anxiety)) +
+  geom_point(size = 3, alpha = 0.7, color = "darkgreen") +
+  geom_smooth(method = "lm", se = TRUE, color = "red", linewidth = 1) +
+  labs(
+    title = "Bivariate Relationship: Anxiety vs Time",
+    subtitle = "Scatter plot with linear regression line and 95% confidence interval",
+    x = "Time",
+    y = "Anxiety"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50")
+  )
+
+# Calculate R-squared for fit assessment
+r_squared_time <- summary(fit_time)$r.squared
+cat(sprintf("R-squared: %.3f\n", r_squared_time))
+
+# Comment on the fit and issues
+cat("Fit assessment: The regression line shows a positive relationship between Time and Anxiety.\n",
+    "However, there are significant issues:\n",
+    "1. Omitted variable bias (Stress is excluded from the model)\n",
+    "2. The estimated Time coefficient is severely biased upward\n",
+    "3. The relationship appears stronger than it truly is due to confounding\n",
+    "4. The true effect of Time (0.1) is much smaller than what this model suggests\n")
+```
+
+### 5) Multiple Regression Analysis
+
+Run a multiple regression of Anxiety on both StressSurvey and Time and compare the estimated coefficients to the true relationship.
+
+```{r}
+# Fit multiple regression model
+fit_multiple <- lm(Anxiety ~ StressSurvey + Time, data = observDF)
+
+# Coefficients (tidy and named)
+fit_multiple_tidy <- broom::tidy(fit_multiple)
+coefficients_multiple <- setNames(fit_multiple_tidy$estimate, fit_multiple_tidy$term)
+coefficients_multiple
+
+# Print a concise summary statement
+intercept_mult <- coefficients_multiple["(Intercept)"]
+slope_stresssurvey <- coefficients_multiple["StressSurvey"]
+slope_time <- coefficients_multiple["Time"]
+cat(sprintf(
+  "Estimated model: Anxiety = %.3f + %.3f × StressSurvey + %.3f × Time\n",
+  intercept_mult, slope_stresssurvey, slope_time
+))
+
+# Standard model summary
+summary(fit_multiple)
+
+# Compare to true relationship
+cat("True DGP: Anxiety = Stress + 0.1 × Time\n",
+    "Comparison to true relationship:\n",
+    "1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f\n",
+    "2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f\n",
+    "3. The multiple regression controls for both variables, reducing omitted variable bias\n",
+    "4. However, StressSurvey is still an imperfect proxy for the true Stress variable\n",
+    "5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model\n",
+    slope_stresssurvey, slope_time)
+```
