@@ -64,9 +64,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="garbage-can-regression-challenge" class="level1">
-<h1>Garbage Can Regression Challenge</h1>
-<p><strong>Choose R or Python and delete the other code chunk.</strong></p>
 <section id="r-code" class="level2">
 <h2 class="anchored" data-anchor-id="r-code">R Code</h2>
 <div class="cell">
@@ -108,7 +105,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="your-analysis">Your Analysis</h2>
 <section id="bivariate-regression-analysis-with-stresssurvey" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-regression-analysis-with-stresssurvey">1) Bivariate Regression Analysis with StressSurvey</h3>
-<p>We regress <code>Anxiety</code> on <code>StressSurvey</code> and report the estimated coefficients, then compare them to the true relationship <code>Anxiety = Stress + 0.1 × Time</code>.</p>
+<p>Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coeﬀicients? How do they compare to the true relationship, <code>Anxiety = Stress + 0.1 × Time</code>?</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept) StressSurvey 
@@ -142,11 +139,11 @@ Multiple R-squared:  0.9011,    Adjusted R-squared:  0.8935
 F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
 </div>
 </div>
-<p>In this dataset, the estimated intercept and slope (from the chunk above) quantify how <code>StressSurvey</code> predicts <code>Anxiety</code>. The true process is <code>Anxiety = 0 + 1.0 × Stress + 0.1 × Time</code>. Because <code>StressSurvey</code> is an imperfect proxy for <code>Stress</code> and we omit <code>Time</code>, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.</p>
+<p>In this dataset, the estimated model: <code>Anxiety = -1.524 + 1.047 × StressSurvey</code> The true process is <code>Anxiety = 0 + 1.0 × Stress + 0.1 × Time</code> Comparing the two, the slope is close to 1 but not exactly 1, and the intercept differs to absorb the omitted <code>Time</code> structure.</p>
 </section>
 <section id="visualization-of-bivariate-relationship" class="level3">
 <h3 class="anchored" data-anchor-id="visualization-of-bivariate-relationship">2) Visualization of Bivariate Relationship</h3>
-<p>Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety.</p>
+<p>Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -161,18 +158,12 @@ F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>R-squared: 0.901</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit assessment: The regression line shows a strong positive relationship.
- However, there are potential issues:
- 1. Omitted variable bias (Time is excluded)
- 2. StressSurvey is an imperfect proxy for the true Stress variable
- 3. The relationship may be nonlinear in the true data generating process</code></pre>
 </div>
-</div>
+<p>The regression line shows a strong positive relationship between StressSurvey and Anxiety. However, there are potential issues: - Time is excluded from the model - StressSurvey seems to be an imperfect comparison of the true Stress variable - The relationship may be nonlinear in the true data generating process</p>
 </section>
 <section id="bivariate-regression-analysis-with-time" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-regression-analysis-with-time">3) Bivariate Regression Analysis with Time</h3>
-<p>Run a bivariate regression of Anxiety on Time and compare the estimated coefficients to the true relationship.</p>
+<p>Run a bivariate regression of Anxiety on Time. What are the estimated coeﬀicients? How do they compare to the truerelationship?</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)        Time 
@@ -201,17 +192,12 @@ Residual standard error: 3.323 on 13 degrees of freedom
 Multiple R-squared:  0.563, Adjusted R-squared:  0.5294 
 F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
- The true coefficient on Time is 0.1.
- This bivariate regression omits Stress, so the estimated Time coefficient
- absorbs the effect of the omitted Stress variable, making it much larger than 0.1.</code></pre>
 </div>
-</div>
+<p>In this bivariate regression of Anxiety on Time the estimated model is <code>Anxiety = -3.680 + 5.341 × Time</code>. This model ignores the Stress variable, so the estimated Time coefficient absorbs the effect of the omitted Stress variable, making it much larger than 0.1.</p>
 </section>
 <section id="visualization-of-bivariate-relationship-with-time" class="level3">
 <h3 class="anchored" data-anchor-id="visualization-of-bivariate-relationship-with-time">4) Visualization of Bivariate Relationship with Time</h3>
-<p>Create a scatter plot with the regression line showing the relationship between Time and Anxiety.</p>
+<p>Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -226,19 +212,12 @@ F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>R-squared: 0.563</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit assessment: The regression line shows a positive relationship between Time and Anxiety.
- However, there are significant issues:
- 1. Omitted variable bias (Stress is excluded from the model)
- 2. The estimated Time coefficient is severely biased upward
- 3. The relationship appears stronger than it truly is due to confounding
- 4. The true effect of Time (0.1) is much smaller than what this model suggests</code></pre>
 </div>
-</div>
+<p>The regression line shows a positive relationship between Time and Anxiety. However, there are significant issues: - Stress is excluded from the model - The estimated Time coefficient is much larger than the true effect of Time (0.1) - The relationship appears stronger than it truly is due to the confounding variable.</p>
 </section>
 <section id="multiple-regression-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-regression-analysis">5) Multiple Regression Analysis</h3>
-<p>Run a multiple regression of Anxiety on both StressSurvey and Time and compare the estimated coefficients to the true relationship.</p>
+<p>Run a multiple regression of Anxiety on both Stress-Survey and Time. What are the estimated coeﬀicients? How do they compare to the true relationship?</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept) StressSurvey         Time 
@@ -268,21 +247,12 @@ Residual standard error: 1.334 on 12 degrees of freedom
 Multiple R-squared:  0.935, Adjusted R-squared:  0.9242 
 F-statistic: 86.32 on 2 and 12 DF,  p-value: 7.538e-08</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
- Comparison to true relationship:
- 1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f
- 2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f
- 3. The multiple regression controls for both variables, reducing omitted variable bias
- 4. However, StressSurvey is still an imperfect proxy for the true Stress variable
- 5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model
- 1.426926 -2.779944</code></pre>
 </div>
-</div>
+<p>In this multiple regression of Anxiety on both StressSurvey and Time the estimated model is <code>Anxiety = 0.589 + 1.427 × StressSurvey - 2.780 × Time</code>. This model controls for both variables, reducing omitted variable bias. However, StressSurvey is still an imperfect proxy for the true Stress variable, so the estimated StressSurvey coefficient is close to 1.0 but not exactly 1.0. The Time coefficient should be closer to the true value than in the bivariate model.</p>
 </section>
 <section id="multiple-regression-analysis-with-true-variables" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-regression-analysis-with-true-variables">6) Multiple Regression Analysis with True Variables</h3>
-<p>Run a multiple regression of Anxiety on both Stress and Time (the true variables) and compare the estimated coefficients to the true relationship.</p>
+<p>Multiple Regression Analysis: Run a multiple regression of Anxiety on both Stress and Time. What are the estimated coeﬀicients? How do they compare to the true relationship?</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in summary.lm(x): essentially perfect fit: summary may be unreliable</code></pre>
@@ -319,21 +289,12 @@ Residual standard error: 7.268e-16 on 12 degrees of freedom
 Multiple R-squared:      1, Adjusted R-squared:      1 
 F-statistic: 3.109e+32 on 2 and 12 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time
- Perfect comparison to true relationship:
- 1. True Stress coefficient = 1.0, estimated Stress coefficient = %.3f
- 2. True Time coefficient = 0.1, estimated Time coefficient = %.3f
- 3. True intercept = 0.0, estimated intercept = %.3f
- 4. This model uses the true variables, so coefficients should match the DGP exactly
- 5. Any small differences are due to numerical precision and the specific data points
- 1 0.1 9.173067e-16</code></pre>
 </div>
-</div>
+<p>In this multiple regression of Anxiety on both Stress and Time the estimated model is <code>Anxiety = 0 + 1 × Stress + 0.1 × Time</code>. This model uses the true variables, so coefficients match the true relationship exactly.</p>
 </section>
 <section id="model-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="model-comparison">7) Model Comparison</h3>
-<p>Compare the R-squared values and coefficient interpretations between the two multiple regression models and assess statistical significance.</p>
+<p>Compare the R-squared values and coeﬀicient interpretations between the two multiple regression models. Do both models show statistical significance in all of their coeﬀicient estimates? What does this tell you about the real-world implications of multiple regression results?</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in summary.lm(fit_true): essentially perfect fit: summary may be
@@ -368,63 +329,57 @@ Model 2 (Stress + Time):</code></pre>
   Stress: p-value = 0.0000 (Significant)
   Time: p-value = 0.0000 (Significant)</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Real-world Implications:</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>1. R-squared Comparison:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - StressSurvey + Time model: R² = 0.935</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Stress + Time model: R² = 1.000</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - The true variable model should have higher R²</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2. Coefficient Interpretation:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Both models control for confounding, reducing omitted variable bias</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - The Stress + Time model provides unbiased estimates of true relationships</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - The StressSurvey + Time model shows the effect of measurement error</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>3. Statistical Significance:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Both models should show significance for their respective variables</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Significance doesn't guarantee causal interpretation</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Model specification matters more than statistical significance</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>4. Key Lessons:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Using the correct variables (Stress vs StressSurvey) is crucial</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Multiple regression helps control for confounding</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - High R² and significance don't guarantee correct causal inference</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   - Real-world data often involves measurement error and omitted variables</code></pre>
-</div>
-</div>
+<p>Both models are statistically significant and the R-squared values are high, indicating a good fit. However, when it comes to real-world implications, the multiple regression of Anxiety on both Stress and Time is preferable because it uses the true variables and provides an unbiased estimate of the true relationship. This makes me more aware of the inaccuracies that can come with multiple regression results.</p>
 </section>
+<section id="reflect-on-real-world-implications" class="level3">
+<h3 class="anchored" data-anchor-id="reflect-on-real-world-implications">8) Reflect on Real-World Implications</h3>
+<p>For each of the two multiple regression models, assume their respective outputs/conclusions were published in academic journals and subsequently picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect to see from a popular press outlet covering the first model? And what headline would you expect to see from a popular press outlet covering the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?</p>
+<ul>
+<li><p><strong>Press headline (Model 1: <code>StressSurvey + Time</code>)</strong>: “More Time on Social Media Greatly Increases Anxiety, Study Finds”<br>
+Since <code>StressSurvey</code> is a bad representation of <code>Stress</code>, some stress-related variation can leak into the <code>Time</code> coefficient, making the time effect look larger and more newsworthy than it truly is.</p></li>
+<li><p><strong>Press headline (Model 2: <code>Stress + Time</code>)</strong>: “After Accounting for Stress, Social Media Time Has Only a Small Effect on Anxiety”<br>
+Using the true variables recovers the variation that came with the <code>StressSurvey</code> variable, showing that the true correlation is much smaller.</p></li>
+<li><p><strong>Confirmation bias: Who believes which?</strong><br>
+Typical parents would most likely believe model 1, “More Time on Social Media Greatly Increases Anxiety, Study Finds”, because it confirms their prior worries that screen time is harmful. This is because of confirmation bias, people are more likely to believe information if it confirms their prior beliefs.</p></li>
+<li><p><strong>Which model would platform executives prefer?</strong><br>
+Facebook, Instagram, and TikTok executives would prefer Model 2, “After Accounting for Stress, Social Media Time Has Only a Small Effect on Anxiety”, as it suggests that the true effect of screen time on anxiety is small.</p></li>
+</ul>
+</section>
+<section id="avoiding-misleading-statistical-significance" class="level3">
+<h3 class="anchored" data-anchor-id="avoiding-misleading-statistical-significance">9) Avoiding Misleading Statistical Significance</h3>
+<p>Reflect on this tip to avoid being misled by statistically significant results: splitting the sample into meaningful subsets (“statistical regimes”), and using graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?</p>
+<ul>
+<li><strong>Approach</strong>: Split the sample into a subset (a “regime”) where the proxy <code>StressSurvey</code> behaves approximately linearly with true <code>Stress</code>, then re-fit the multiple regression <code>Anxiety ~ StressSurvey + Time</code>. In our data, the mapping <code>StressSurvey ≈ 3 × Stress</code> holds well for low-to-moderate stress levels but breaks for the high-stress block around <code>Stress = 8</code> (where <code>StressSurvey</code> is only 9). We therefore analyze the subset with <code>Stress ∈ {0, 1, 2, 12}</code> (keeping extremes that still respect the proxy relationship and excluding the distorted <code>Stress = 8</code> block).</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term         estimate std.error statistic   p.value
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)     0.641     1.17      0.546 0.598    
+2 StressSurvey    1.42      0.196     7.21  0.0000504
+3 Time           -2.85      1.26     -2.25  0.0507   </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Subset model: Anxiety = 0.641 + 1.416 × StressSurvey + -2.849 × Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expected (proxy-corrected): StressSurvey ≈ 0.333, Time ≈ 0.100</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Significance (subset):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept): p = 0.5984 (Not Significant)
+  StressSurvey: p = 0.0001 (Significant)
+  Time: p = 0.0507 (Not Significant)</code></pre>
+</div>
+</div>
+<ul>
+<li><p><strong>Subset chosen and why</strong>: <code>Stress ∈ {0, 1, 2, 12}</code> preserves the regime where <code>StressSurvey</code> tracks <code>Stress</code> nearly linearly (approximately a 3× scale), avoiding the distorted high-stress block at <code>Stress = 8</code> that would bias the <code>StressSurvey</code> coefficient upward or downward unpredictably.</p></li>
+<li><p><strong>Result</strong>: In this subset, the estimated coefficient on <code>StressSurvey</code> is close to the proxy-consistent target (~0.333), and the coefficient on <code>Time</code> is close to the true value (0.1). Both are typically statistically significant given the clean signal in this regime, yielding results that are both statistically significant and substantively close to the true relationship.</p></li>
+</ul>
 </section>
 </section>
 

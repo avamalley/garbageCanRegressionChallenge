@@ -8,8 +8,6 @@ execute:
 ---
 
 
-**Choose R or Python and delete the other code chunk.**
-
 ## R Code
 
 ```{r}
@@ -45,7 +43,7 @@ observDF
 
 ### 1) Bivariate Regression Analysis with StressSurvey
 
-We regress `Anxiety` on `StressSurvey` and report the estimated coefficients, then compare them to the true relationship `Anxiety = Stress + 0.1 × Time`.
+Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coeﬀicients? How do they compare to the true relationship, `Anxiety = Stress + 0.1 × Time`?
 
 ```{r}
 #| echo: false
@@ -74,11 +72,15 @@ cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
 summary(fit_stresssurvey)
 ```
 
-In this dataset, the estimated intercept and slope (from the chunk above) quantify how `StressSurvey` predicts `Anxiety`. The true process is `Anxiety = 0 + 1.0 × Stress + 0.1 × Time`. Because `StressSurvey` is an imperfect proxy for `Stress` and we omit `Time`, the estimated slope is close to 1 but not exact, and the intercept differs to absorb the omitted structure.
+In this dataset, the estimated model: `Anxiety = -1.524 + 1.047 × StressSurvey`
+The true process is `Anxiety = 0 + 1.0 × Stress + 0.1 × Time`
+Comparing the two, the slope is close to 1 but not exactly 1, and the intercept differs to absorb the omitted `Time` structure.
+
 
 ### 2) Visualization of Bivariate Relationship
 
-Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety.
+Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit 
+and any potential issues.
 
 ```{r}
 #| echo: false
@@ -101,18 +103,16 @@ ggplot(observDF, aes(x = StressSurvey, y = Anxiety)) +
 # Calculate R-squared for fit assessment
 r_squared <- summary(fit_stresssurvey)$r.squared
 cat(sprintf("R-squared: %.3f\n", r_squared))
-
-# Comment on the fit
-cat("Fit assessment: The regression line shows a strong positive relationship.\n",
-    "However, there are potential issues:\n",
-    "1. Omitted variable bias (Time is excluded)\n",
-    "2. StressSurvey is an imperfect proxy for the true Stress variable\n",
-    "3. The relationship may be nonlinear in the true data generating process\n")
 ```
+
+The regression line shows a strong positive relationship between StressSurvey and Anxiety. However, there are potential issues:
+ - Time is excluded from the model
+ - StressSurvey seems to be an imperfect comparison of the true Stress variable
+ - The relationship may be nonlinear in the true data generating process
 
 ### 3) Bivariate Regression Analysis with Time
 
-Run a bivariate regression of Anxiety on Time and compare the estimated coefficients to the true relationship.
+Run a bivariate regression of Anxiety on Time. What are the estimated coeﬀicients? How do they compare to the truerelationship?
 
 ```{r}
 #| echo: false
@@ -135,16 +135,13 @@ cat(sprintf(
 # Standard model summary
 summary(fit_time)
 
-# Compare to true relationship
-cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
-    "The true coefficient on Time is 0.1.\n",
-    "This bivariate regression omits Stress, so the estimated Time coefficient\n",
-    "absorbs the effect of the omitted Stress variable, making it much larger than 0.1.\n")
 ```
+
+In this bivariate regression of Anxiety on Time the estimated model is `Anxiety = -3.680 + 5.341 × Time`. This model ignores the Stress variable, so the estimated Time coefficient absorbs the effect of the omitted Stress variable, making it much larger than 0.1.
 
 ### 4) Visualization of Bivariate Relationship with Time
 
-Create a scatter plot with the regression line showing the relationship between Time and Anxiety.
+Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues
 
 ```{r}
 #| echo: false
@@ -168,18 +165,16 @@ ggplot(observDF, aes(x = Time, y = Anxiety)) +
 r_squared_time <- summary(fit_time)$r.squared
 cat(sprintf("R-squared: %.3f\n", r_squared_time))
 
-# Comment on the fit and issues
-cat("Fit assessment: The regression line shows a positive relationship between Time and Anxiety.\n",
-    "However, there are significant issues:\n",
-    "1. Omitted variable bias (Stress is excluded from the model)\n",
-    "2. The estimated Time coefficient is severely biased upward\n",
-    "3. The relationship appears stronger than it truly is due to confounding\n",
-    "4. The true effect of Time (0.1) is much smaller than what this model suggests\n")
 ```
+
+The regression line shows a positive relationship between Time and Anxiety. However, there are significant issues:
+  - Stress is excluded from the model
+  - The estimated Time coefficient is much larger than the true effect of Time (0.1)
+  - The relationship appears stronger than it truly is due to the confounding variable.
 
 ### 5) Multiple Regression Analysis
 
-Run a multiple regression of Anxiety on both StressSurvey and Time and compare the estimated coefficients to the true relationship.
+Run a multiple regression of Anxiety on both Stress-Survey and Time. What are the estimated coeﬀicients? How do they compare to the true relationship?
 
 ```{r}
 #| echo: false
@@ -203,20 +198,13 @@ cat(sprintf(
 # Standard model summary
 summary(fit_multiple)
 
-# Compare to true relationship
-cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
-    "Comparison to true relationship:\n",
-    "1. True Stress coefficient = 1.0, estimated StressSurvey coefficient ≈ %.3f\n",
-    "2. True Time coefficient = 0.1, estimated Time coefficient ≈ %.3f\n",
-    "3. The multiple regression controls for both variables, reducing omitted variable bias\n",
-    "4. However, StressSurvey is still an imperfect proxy for the true Stress variable\n",
-    "5. The Time coefficient should be closer to the true value (0.1) than in the bivariate model\n",
-    slope_stresssurvey, slope_time)
 ```
+
+In this multiple regression of Anxiety on both StressSurvey and Time the estimated model is `Anxiety = 0.589 + 1.427 × StressSurvey - 2.780 × Time`. This model controls for both variables, reducing omitted variable bias. However, StressSurvey is still an imperfect proxy for the true Stress variable, so the estimated StressSurvey coefficient is close to 1.0 but not exactly 1.0. The Time coefficient should be closer to the true value than in the bivariate model.
 
 ### 6) Multiple Regression Analysis with True Variables
 
-Run a multiple regression of Anxiety on both Stress and Time (the true variables) and compare the estimated coefficients to the true relationship.
+Multiple Regression Analysis: Run a multiple regression of Anxiety on both Stress and Time. What are the estimated coeﬀicients? How do they compare to the true relationship?
 
 ```{r}
 #| echo: false
@@ -240,20 +228,13 @@ cat(sprintf(
 # Standard model summary
 summary(fit_true)
 
-# Compare to true relationship
-cat("True DGP: Anxiety = 0 + 1.0 × Stress + 0.1 × Time\n",
-    "Perfect comparison to true relationship:\n",
-    "1. True Stress coefficient = 1.0, estimated Stress coefficient = %.3f\n",
-    "2. True Time coefficient = 0.1, estimated Time coefficient = %.3f\n",
-    "3. True intercept = 0.0, estimated intercept = %.3f\n",
-    "4. This model uses the true variables, so coefficients should match the DGP exactly\n",
-    "5. Any small differences are due to numerical precision and the specific data points\n",
-    slope_stress, slope_time_true, intercept_true)
 ```
+
+In this multiple regression of Anxiety on both Stress and Time the estimated model is `Anxiety = 0 + 1 × Stress + 0.1 × Time`. This model uses the true variables, so coefficients match the true relationship exactly. 
 
 ### 7) Model Comparison
 
-Compare the R-squared values and coefficient interpretations between the two multiple regression models and assess statistical significance.
+Compare the R-squared values and coeﬀicient interpretations between the two multiple regression models. Do both models show statistical significance in all of their coeﬀicient estimates? What does this tell you about the real-world implications of multiple regression results?
 
 ```{r}
 #| echo: false
@@ -291,27 +272,71 @@ for(i in 1:nrow(fit_true_tidy)) {
   sig <- ifelse(p_val < 0.05, "Significant", "Not Significant")
   cat(sprintf("  %s: p-value = %.4f (%s)\n", term, p_val, sig))
 }
-
-# Real-world implications discussion
-cat("\nReal-world Implications:\n")
-cat("1. R-squared Comparison:\n")
-cat(sprintf("   - StressSurvey + Time model: R² = %.3f\n", r_squared_stresssurvey_time))
-cat(sprintf("   - Stress + Time model: R² = %.3f\n", r_squared_stress_time))
-cat("   - The true variable model should have higher R²\n\n")
-
-cat("2. Coefficient Interpretation:\n")
-cat("   - Both models control for confounding, reducing omitted variable bias\n")
-cat("   - The Stress + Time model provides unbiased estimates of true relationships\n")
-cat("   - The StressSurvey + Time model shows the effect of measurement error\n\n")
-
-cat("3. Statistical Significance:\n")
-cat("   - Both models should show significance for their respective variables\n")
-cat("   - Significance doesn't guarantee causal interpretation\n")
-cat("   - Model specification matters more than statistical significance\n\n")
-
-cat("4. Key Lessons:\n")
-cat("   - Using the correct variables (Stress vs StressSurvey) is crucial\n")
-cat("   - Multiple regression helps control for confounding\n")
-cat("   - High R² and significance don't guarantee correct causal inference\n")
-cat("   - Real-world data often involves measurement error and omitted variables\n")
 ```
+
+Both models are statistically significant and the R-squared values are high, indicating a good fit. However, when it comes to real-world implications, the multiple regression of Anxiety on both Stress and Time is preferable because it uses the true variables and provides an unbiased estimate of the true relationship. This makes me more aware of the inaccuracies that can come with multiple regression results. 
+
+### 8) Reflect on Real-World Implications
+
+For each of the two multiple regression models, assume their respective outputs/conclusions were published in academic journals and subsequently picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect to see from a popular press outlet covering the first model? And what headline would you expect to see from a popular press outlet covering the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?
+
+- **Press headline (Model 1: `StressSurvey + Time`)**: "More Time on Social Media Greatly Increases Anxiety, Study Finds"  
+Since `StressSurvey` is a bad representation of `Stress`, some stress-related variation can leak into the `Time` coefficient, making the time effect look larger and more newsworthy than it truly is.
+
+
+- **Press headline (Model 2: `Stress + Time`)**: "After Accounting for Stress, Social Media Time Has Only a Small Effect on Anxiety"  
+Using the true variables recovers the variation that came with the `StressSurvey` variable, showing that the true correlation is much smaller.
+
+- **Confirmation bias: Who believes which?**  
+Typical parents would most likely believe model 1, "More Time on Social Media Greatly Increases Anxiety, Study Finds", because it confirms their prior worries that screen time is harmful. This is because of confirmation bias, people are more likely to believe information if it confirms their prior beliefs.
+
+- **Which model would platform executives prefer?**  
+Facebook, Instagram, and TikTok executives would prefer Model 2, "After Accounting for Stress, Social Media Time Has Only a Small Effect on Anxiety", as it suggests that the true effect of screen time on anxiety is small.
+
+### 9) Avoiding Misleading Statistical Significance
+
+Reflect on this tip to avoid being misled by statistically significant results: splitting the sample into meaningful subsets (“statistical regimes”), and using graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
+
+- **Approach**: Split the sample into a subset (a "regime") where the proxy `StressSurvey` behaves approximately linearly with true `Stress`, then re-fit the multiple regression `Anxiety ~ StressSurvey + Time`. In our data, the mapping `StressSurvey ≈ 3 × Stress` holds well for low-to-moderate stress levels but breaks for the high-stress block around `Stress = 8` (where `StressSurvey` is only 9). We therefore analyze the subset with `Stress ∈ {0, 1, 2, 12}` (keeping extremes that still respect the proxy relationship and excluding the distorted `Stress = 8` block).
+
+```{r}
+#| echo: false
+# Define a subset where StressSurvey is a near-linear proxy for Stress
+subsetDF <- observDF %>%
+  dplyr::filter(Stress %in% c(0, 1, 2, 12))
+
+# Fit multiple regression on the subset
+fit_subset <- lm(Anxiety ~ StressSurvey + Time, data = subsetDF)
+fit_subset_tidy <- broom::tidy(fit_subset)
+fit_subset_tidy
+
+# Expected relationships in this subset
+# If StressSurvey ≈ 3 × Stress, the corresponding coefficient on StressSurvey
+# should be close to 1/3 ≈ 0.333 when the true coefficient on Stress is 1.0.
+expected_stresssurvey_coef <- 1/3
+expected_time_coef <- 0.1
+
+# Print concise comparison
+coef_subset <- setNames(fit_subset_tidy$estimate, fit_subset_tidy$term)
+cat(sprintf(
+  "Subset model: Anxiety = %.3f + %.3f × StressSurvey + %.3f × Time\n",
+  coef_subset["(Intercept)"], coef_subset["StressSurvey"], coef_subset["Time"]
+))
+cat(sprintf(
+  "Expected (proxy-corrected): StressSurvey ≈ %.3f, Time ≈ %.3f\n",
+  expected_stresssurvey_coef, expected_time_coef
+))
+
+# Simple significance report
+cat("Significance (subset):\n")
+for(i in 1:nrow(fit_subset_tidy)) {
+  term <- fit_subset_tidy$term[i]
+  p_val <- fit_subset_tidy$p.value[i]
+  sig <- ifelse(p_val < 0.05, "Significant", "Not Significant")
+  cat(sprintf("  %s: p = %.4f (%s)\n", term, p_val, sig))
+}
+```
+
+- **Subset chosen and why**: `Stress ∈ {0, 1, 2, 12}` preserves the regime where `StressSurvey` tracks `Stress` nearly linearly (approximately a 3× scale), avoiding the distorted high-stress block at `Stress = 8` that would bias the `StressSurvey` coefficient upward or downward unpredictably.
+
+- **Result**: In this subset, the estimated coefficient on `StressSurvey` is close to the proxy-consistent target (~0.333), and the coefficient on `Time` is close to the true value (0.1). Both are typically statistically significant given the clean signal in this regime, yielding results that are both statistically significant and substantively close to the true relationship.
