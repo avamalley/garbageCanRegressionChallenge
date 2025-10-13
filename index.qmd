@@ -3,7 +3,7 @@ title: "Garbage Can Regression Challenge"
 format:
   html: default
 execute:
-  echo: true
+  echo: false
   eval: true
 ---
 
@@ -296,8 +296,6 @@ Facebook, Instagram, and TikTok executives would prefer Model 2, "After Accounti
 ### 9) Avoiding Misleading Statistical Significance
 
 Reflect on this tip to avoid being misled by statistically significant results: splitting the sample into meaningful subsets (“statistical regimes”), and using graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
-
-- **Approach**: Split the sample into a subset (a "regime") where the proxy `StressSurvey` behaves approximately linearly with true `Stress`, then re-fit the multiple regression `Anxiety ~ StressSurvey + Time`. In our data, the mapping `StressSurvey ≈ 3 × Stress` holds well for low-to-moderate stress levels but breaks for the high-stress block around `Stress = 8` (where `StressSurvey` is only 9). We therefore analyze the subset with `Stress ∈ {0, 1, 2, 12}` (keeping extremes that still respect the proxy relationship and excluding the distorted `Stress = 8` block).
 
 ```{r}
 #| echo: false
